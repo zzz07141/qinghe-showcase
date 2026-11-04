@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="青禾集">
+  <rect width="64" height="64" rx="14" fill="#1F2D26"/>
+  <rect x="4.5" y="4.5" width="55" height="55" rx="11" fill="none" stroke="#F6F1E7" stroke-opacity=".35"/>
+  <path d="M32 49V27" stroke="#F6F1E7" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M32 34C24 34 19.5 29.5 19 22c8 .2 12.8 4.6 13 12Z" fill="#C19A55"/>
+  <path d="M32 40c8 0 12.5-4.5 13-12-8 .2-12.8 4.6-13 12Z" fill="#B9573D"/>
+  <circle cx="32" cy="18" r="2.4" fill="#F6F1E7"/>
+</svg>

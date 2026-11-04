@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 760" width="1000" height="760" role="img" aria-label="外婆的厨房">
+<title>外婆的厨房</title>
+<defs>
+  <filter id="rough" x="-12%" y="-12%" width="124%" height="124%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="3" seed="9" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="rough2" x="-15%" y="-15%" width="130%" height="130%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.02 0.03" numOctaves="2" seed="21" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="16" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+    <feGaussianBlur stdDeviation="18"/>
+  </filter>
+  <filter id="soft8" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="8"/>
+  </filter>
+  <filter id="paper">
+    <feTurbulence type="fractalNoise" baseFrequency="0.78" numOctaves="4" seed="3" stitchTiles="stitch"/>
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer><feFuncA type="linear" slope="0.16"/></feComponentTransfer>
+  </filter>
+  <filter id="paperBig">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="4" seed="5" stitchTiles="stitch"/>
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer><feFuncA type="linear" slope="0.22"/></feComponentTransfer>
+  </filter>
+</defs>
+<rect width="100%" height="100%" fill="#FBF7EC"/>
+
+<defs>
+<linearGradient id="wall2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8C79C"/><stop offset="1" stop-color="#D6A875"/></linearGradient>
+<linearGradient id="window2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BFDBCF"/><stop offset="1" stop-color="#EEF0D2"/></linearGradient>
+<linearGradient id="steam2" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FFF9EA" stop-opacity="0"/><stop offset=".5" stop-color="#FFF9EA" stop-opacity=".75"/><stop offset="1" stop-color="#FFF9EA" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="1000" height="760" fill="url(#wall2)"/>
+<rect y="580" width="1000" height="180" fill="#A86A49"/><path d="M0 580h1000" stroke="#84503A" stroke-width="10" opacity=".5"/>
+<g opacity=".25" filter="url(#paperBig)"><rect width="1000" height="760" fill="#8B5E3C"/></g>
+<g filter="url(#rough)"><rect x="86" y="105" width="322" height="330" rx="4" fill="#F4E6CC"/><rect x="105" y="124" width="284" height="292" fill="url(#window2)"/><path d="M105 326c54-57 103-63 151-19 34 31 70 29 133-10v119H105z" fill="#8FAA76"/><circle cx="323" cy="190" r="35" fill="#F4C86E" opacity=".8"/><path d="M247 124v292M105 270h284" stroke="#EAD8B6" stroke-width="12"/></g>
+<path d="M397 171l279 100-13 54L386 258z" fill="#FFF4CE" opacity=".3" filter="url(#soft)"/>
+<path d="M391 335l314 92-8 37-321-94z" fill="#FFF9E7" opacity=".2" filter="url(#soft)"/>
+<g filter="url(#rough)"><rect x="635" y="112" width="293" height="17" rx="7" fill="#8F5A3B"/><path d="M670 112V70h57v42" fill="none" stroke="#8F5A3B" stroke-width="8"/>
+<path d="M654 112V81q0-12 12-12h12q12 0 12 12v31z" fill="#D58C58"/><rect x="661" y="68" width="22" height="13" rx="5" fill="#F2DFC0"/>
+<path d="M706 112V66q0-12 12-12h18q12 0 12 12v46z" fill="#A8B98B"/><rect x="713" y="53" width="28" height="13" rx="5" fill="#F2DFC0"/>
+<path d="M764 112V86q0-12 12-12h9q12 0 12 12v26z" fill="#E7C68F"/><rect x="771" y="73" width="19" height="13" rx="5" fill="#F2DFC0"/>
+<path d="M812 112V61q0-12 12-12h20q12 0 12 12v51z" fill="#C67E62"/><rect x="819" y="48" width="30" height="13" rx="5" fill="#F2DFC0"/>
+<path d="M873 112V81q0-12 12-12h11q12 0 12 12v31z" fill="#8DA9A0"/><rect x="880" y="68" width="21" height="13" rx="5" fill="#F2DFC0"/>
+</g>
+<g stroke="#6D4A36" stroke-width="7" stroke-linecap="round" fill="none" filter="url(#rough)"><path d="M552 0v96M552 48h78M630 48v57M552 41h-76M476 41v55"/><circle cx="630" cy="116" r="14" fill="#C9B18A"/><path d="M476 96l-16 32h32z" fill="#B98A5B"/><path d="M552 96c-26 0-34 53-9 53s17-53-9-53" fill="#A26D4C" stroke="none"/></g>
+<g filter="url(#rough)"><path d="M60 554h710v48H60z" fill="#81513B"/><path d="M95 602h44v155H95zM692 602h44v155h-44z" fill="#6E4433"/><path d="M60 565h710" stroke="#C58B5D" stroke-width="4" opacity=".5"/></g>
+<g filter="url(#rough2)" opacity=".95"><path d="M170 548h440l46 132c-108 28-276 31-402 8l-52-66z" fill="#F1E2C4"/><path d="M200 583h392M192 620h393M184 657h386" stroke="#B85E4E" stroke-width="5" opacity=".5"/><path d="M248 549l-37 134M326 549l-22 134M406 549l-4 136M486 549l14 134M566 549l30 130" stroke="#B85E4E" stroke-width="5" opacity=".28"/></g>
+<g filter="url(#rough)"><ellipse cx="380" cy="537" rx="100" ry="26" fill="#5D6250"/><path d="M291 511c0-72 178-72 178 0 0 41-39 55-89 55s-89-14-89-55z" fill="#717867"/><path d="M291 506h178" stroke="#4D5344" stroke-width="8"/><path d="M313 514c17 12 34 15 59 15s44-4 61-16" fill="none" stroke="#A8AE98" stroke-width="7" opacity=".6"/><path d="M271 500h-22c-18 0-22 20-3 20h20M489 500h22c18 0 22 20 3 20h-20" fill="none" stroke="#525748" stroke-width="11"/></g>
+<g fill="none" stroke="url(#steam2)" stroke-width="12" stroke-linecap="round" opacity=".8"><path d="M344 449c-27-38 21-53-3-92s16-60 4-90"/><path d="M388 441c25-34 0-60 15-87 18-32-5-61 3-91"/><path d="M428 455c-18-30 18-48 1-83"/></g>
+<g filter="url(#rough)"><ellipse cx="590" cy="532" rx="48" ry="14" fill="#D8C8AC"/><path d="M542 523c4 32 92 32 96 0z" fill="#F1E5CE"/><ellipse cx="590" cy="522" rx="48" ry="13" fill="#FDF7E9"/><rect x="638" y="486" width="104" height="50" rx="8" fill="#C49762"/><circle cx="670" cy="510" r="7" fill="#8CAF78"/><circle cx="693" cy="506" r="6" fill="#C8634F"/><circle cx="716" cy="513" r="8" fill="#E4BA5F"/></g>
+<g filter="url(#rough)"><path d="M764 430h120v47H764z" fill="#9B6646"/><path d="M778 477h22v181h-22zM848 477h22v181h-22z" fill="#87573F"/><path d="M764 430v-90h17v90M871 430v-90h-17v90" fill="#9B6646"/><path d="M742 391c19-44 54-57 83-47 24 8 31 34 21 61-9 23-31 30-59 27-29-4-51-18-45-41z" fill="#D88648"/><path d="M755 361c-5-22-3-38 8-45 12 12 19 24 19 38M829 353c4-20 11-32 22-37 8 12 10 26 4 39" fill="#C9783E"/><path d="M768 406c9-7 18-7 27 0M836 406c9-7 18-7 27 0" fill="none" stroke="#8C512F" stroke-width="4"/><path d="M807 416l-7 7 7 7 7-7z" fill="#A45A34"/><path d="M860 429c47 0 51 45 17 48" fill="none" stroke="#C9783E" stroke-width="17" stroke-linecap="round"/></g>
+<g opacity=".55" filter="url(#rough)"><path d="M48 704h240M40 735h280M905 690h70" stroke="#774B37" stroke-width="4"/><ellipse cx="654" cy="704" rx="120" ry="22" fill="#8C553D" opacity=".5"/></g>
+
+<rect width="100%" height="100%" fill="#6B5B43" filter="url(#paper)" opacity=".55" style="mix-blend-mode:multiply"/>
+<rect width="100%" height="100%" fill="none" stroke="#7C6F58" stroke-opacity=".18" stroke-width="2"/>
+<text x="958" y="724" text-anchor="end" font-family="Kaiti SC, STKaiti, serif" font-size="22" fill="#5B5A4E" opacity=".78">周予安 · 10岁</text>
+</svg>
