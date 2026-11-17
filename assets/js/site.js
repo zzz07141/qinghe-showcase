@@ -1,6 +1,6 @@
 /* ============================================================
-   青禾集 · 交互
-   列表渲染、筛选、阅读器、灯箱、移动端菜单。
+   风禾有章 · 交互
+   渲染、风格筛选、搜索、阅读器、分类索引、移动端菜单。
    ============================================================ */
 
 (function () {
@@ -9,12 +9,18 @@
   const store = window.QINGHE || {};
   const SITE = store.SITE || {};
   const ESSAYS = store.ESSAYS || [];
-  const ARTWORKS = store.ARTWORKS || [];
-  const WORKS = store.WORKS || [];
+  const WORKS = store.WORKS || ESSAYS;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const $ = (selector, scope = document) => scope.querySelector(selector);
   const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
+
+  const STYLE_ORDER = ["风物", "心绪", "生长"];
+  const STYLE_NOTES = {
+    风物: "目光停在枝叶、光影、雨雾与村庄的晨昏里。",
+    心绪: "树影与心事互相照见，风一吹，句子就有了温度。",
+    生长: "由树及人，写时间、陪伴，也写少年自己的成长。",
+  };
 
   const escapeHTML = (value = "") =>
     String(value)
@@ -25,15 +31,14 @@
       .replace(/'/g, "&#039;");
 
   const SITE_DEFAULTS = {
-    name: "青禾集",
-    mark: "青禾",
-    english: "QINGHE COLLECTION",
-    className: "六年级（3）班",
-    term: "2026 秋季",
+    name: "风禾有章",
+    mark: "风禾",
+    english: "FENGHE ANTHOLOGY",
+    className: "高一（1）班 · 高一（3）班",
+    term: "2026 秋",
     termShort: "2026 秋",
-    teacher: "林老师",
-    school: "青禾小学",
-    email: "hello@qinghe.class",
+    teacher: "中高一体部语文组",
+    school: "中高一体部",
   };
 
   function applySite() {
@@ -43,10 +48,10 @@
     if (SITE.themeTitle) {
       $$(".hero-foot-theme").forEach((node) => (node.textContent = SITE.themeTitle));
       const themeKicker = $(".quote-feature .kicker");
-      if (themeKicker) {
-        themeKicker.textContent = `本期主题 · ${SITE.themeTitle}`;
-      }
-      $$(".quote-feature-seal").forEach((node) => (node.textContent = SITE.themeTitle));
+      if (themeKicker) themeKicker.textContent = `本期主题 · ${SITE.themeTitle}`;
+      $$(".quote-feature-seal").forEach(
+        (node) => (node.textContent = SITE.themeSeal || SITE.themeTitle)
+      );
     }
 
     const pairs = Object.keys(SITE_DEFAULTS)
@@ -73,9 +78,7 @@
     });
 
     let node;
-    while ((node = walker.nextNode())) {
-      node.nodeValue = swap(node.nodeValue);
-    }
+    while ((node = walker.nextNode())) node.nodeValue = swap(node.nodeValue);
 
     document.title = swap(document.title);
     $$('meta[name="description"]').forEach((meta) => {
@@ -84,16 +87,9 @@
     if (SITE.name) {
       $$(".brand").forEach((link) => link.setAttribute("aria-label", `${SITE.name}首页`));
     }
-    if (SITE.email) {
-      $$('a[href^="mailto:"]').forEach((link) => {
-        link.href = `mailto:${SITE.email}`;
-      });
-    }
   }
 
   const byId = (id) => WORKS.find((work) => work.id === id);
-  const essays = () => ESSAYS.slice();
-  const art = () => ARTWORKS.slice();
 
   function countAuthors(items) {
     return new Set(
@@ -107,10 +103,8 @@
     const totals = {
       works: WORKS.length,
       essays: ESSAYS.length,
-      artworks: ARTWORKS.length,
       authors: countAuthors(WORKS),
       essayAuthors: countAuthors(ESSAYS),
-      artAuthors: countAuthors(ARTWORKS),
     };
 
     $$("[data-total]").forEach((node) => {
@@ -118,6 +112,14 @@
       if (Object.prototype.hasOwnProperty.call(totals, key)) {
         node.textContent = String(totals[key]);
       }
+    });
+
+    const categoryCounts = {};
+    ESSAYS.forEach((work) => {
+      categoryCounts[work.category] = (categoryCounts[work.category] || 0) + 1;
+    });
+    $$("[data-category-count]").forEach((node) => {
+      node.textContent = String(categoryCounts[node.dataset.categoryCount] || 0);
     });
   }
 
@@ -132,7 +134,7 @@
       .join("");
     return `
       <article class="essay-card${dark ? " essay-card--dark" : ""} reveal" data-work-card="${escapeHTML(work.id)}">
-        <button class="work-open" type="button" data-open-essay="${escapeHTML(work.id)}" aria-label="阅读作文《${escapeHTML(work.title)}》">
+        <button class="work-open" type="button" data-open-essay="${escapeHTML(work.id)}" aria-label="阅读《${escapeHTML(work.title)}》">
           <span class="essay-card-top">
             <span class="essay-card-index">${pad(index + 1)}</span>
             <span class="essay-chip">${escapeHTML(work.category)}</span>
@@ -141,7 +143,7 @@
           <span class="essay-card-excerpt">${escapeHTML(work.excerpt)}</span>
           ${dark && work.quote ? `<span class="essay-card-quote">「${escapeHTML(work.quote)}」</span>` : ""}
           <span class="essay-card-foot">
-            <span class="essay-card-author"><strong>${escapeHTML(work.author)}</strong><span>${escapeHTML(work.age || "")}</span></span>
+            <span class="essay-card-author"><strong>${escapeHTML(work.author)}</strong><span>${escapeHTML(work.className || "")}</span></span>
             <span class="essay-card-tags">${tags}</span>
             <span class="foot-arrow" aria-hidden="true">↗</span>
           </span>
@@ -149,40 +151,16 @@
       </article>`;
   }
 
-  function artTile(work, index, options = {}) {
-    const eager = Boolean(options.eager);
-    return `
-      <article class="art-tile reveal" data-art-card="${escapeHTML(work.id)}" data-category="${escapeHTML(work.category)}">
-        <button class="art-open" type="button" data-open-art="${escapeHTML(work.id)}" aria-label="查看绘画《${escapeHTML(work.title)}》">
-          <span class="art-tile-frame">
-            <img src="${escapeHTML(work.src)}" alt="${escapeHTML(work.title)}，${escapeHTML(work.description || "")}" ${eager ? "" : 'loading="lazy"'} decoding="async">
-          </span>
-          <span class="art-tile-caption">
-            <strong>${escapeHTML(work.title)}</strong>
-            <span>${escapeHTML(work.author)} · ${escapeHTML(work.medium)}</span>
-          </span>
-          <span class="art-tile-note">${escapeHTML(work.excerpt || "")}</span>
-        </button>
-      </article>`;
-  }
-
-  /* ---------- 渲染首页 ---------- */
+  /* ---------- 首页 ---------- */
 
   function renderHome() {
-    const essayHost = $("[data-home-essays]");
-    if (essayHost) {
-      const featured = ESSAYS.filter((work) => work.featured).slice(0, 3);
-      essayHost.innerHTML = featured.map((work, i) => essayCard(work, i, { dark: i === 0 })).join("");
-    }
-
-    const artHost = $("[data-home-art]");
-    if (artHost) {
-      const featured = ARTWORKS.filter((work) => work.featured).slice(0, 4);
-      artHost.innerHTML = featured.map((work, i) => artTile(work, i, { eager: i < 2 })).join("");
-    }
+    const host = $("[data-home-essays]");
+    if (!host) return;
+    const featured = ESSAYS.filter((work) => work.featured).slice(0, 3);
+    host.innerHTML = featured.map((work, i) => essayCard(work, i, { dark: i === 0 })).join("");
   }
 
-  /* ---------- 作文页 ---------- */
+  /* ---------- 习作集 ---------- */
 
   function initEssayPage() {
     const grid = $("[data-essay-grid]");
@@ -191,11 +169,17 @@
     grid.innerHTML = ESSAYS.map((work, i) => essayCard(work, i)).join("");
 
     const filterHost = $("[data-essay-filters]");
-    const categories = ["全部", ...new Set(ESSAYS.map((work) => work.category))];
+    const extras = [...new Set(ESSAYS.map((work) => work.category))].filter(
+      (category) => !STYLE_ORDER.includes(category)
+    );
+    const categories = ["全部", ...STYLE_ORDER, ...extras];
+    const requested = new URLSearchParams(window.location.search).get("style");
+    let activeCategory = categories.includes(requested) ? requested : "全部";
+
     filterHost.innerHTML = categories
       .map(
-        (category, i) =>
-          `<button class="filter-btn${i === 0 ? " is-active" : ""}" type="button" data-filter="${escapeHTML(category)}" aria-pressed="${i === 0}">${escapeHTML(category)}</button>`
+        (category) =>
+          `<button class="filter-btn${category === activeCategory ? " is-active" : ""}" type="button" data-filter="${escapeHTML(category)}" aria-pressed="${category === activeCategory}">${escapeHTML(category)}</button>`
       )
       .join("");
 
@@ -203,7 +187,6 @@
     const clear = $("[data-essay-clear]");
     const count = $("[data-essay-count]");
     const empty = $("[data-essay-empty]");
-    let activeCategory = "全部";
 
     function update() {
       const query = (input?.value || "").trim().toLowerCase();
@@ -212,7 +195,14 @@
         const work = byId(card.dataset.workCard);
         if (!work) return;
         const matchesCategory = activeCategory === "全部" || work.category === activeCategory;
-        const haystack = [work.title, work.author, work.category, work.excerpt, ...(work.tags || [])]
+        const haystack = [
+          work.title,
+          work.author,
+          work.className,
+          work.category,
+          work.excerpt,
+          ...(work.tags || []),
+        ]
           .join(" ")
           .toLowerCase();
         const matchesQuery = !query || haystack.includes(query);
@@ -248,50 +238,35 @@
     update();
   }
 
-  /* ---------- 画廊页 ---------- */
+  /* ---------- 分类索引 ---------- */
 
-  function initGalleryPage() {
-    const grid = $("[data-gallery-grid]");
-    if (!grid) return;
+  function initCategoryPage() {
+    const host = $("[data-category-index]");
+    if (!host) return;
 
-    grid.innerHTML = ARTWORKS.map((work, i) => artTile(work, i, { eager: i < 3 })).join("");
-
-    const filterHost = $("[data-gallery-filters]");
-    const categories = ["全部", ...new Set(ARTWORKS.map((work) => work.category))];
-    filterHost.innerHTML = categories
-      .map(
-        (category, i) =>
-          `<button class="filter-btn${i === 0 ? " is-active" : ""}" type="button" data-filter="${escapeHTML(category)}" aria-pressed="${i === 0}">${escapeHTML(category)}</button>`
-      )
-      .join("");
-
-    const count = $("[data-gallery-count]");
-    let activeCategory = "全部";
-
-    function update() {
-      grid.classList.toggle("is-filtered", activeCategory !== "全部");
-      let visible = 0;
-      $$(".art-tile", grid).forEach((card) => {
-        const show = activeCategory === "全部" || card.dataset.category === activeCategory;
-        card.hidden = !show;
-        if (show) visible += 1;
-      });
-      if (count) count.textContent = pad(visible);
-    }
-
-    filterHost.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-filter]");
-      if (!button) return;
-      activeCategory = button.dataset.filter;
-      $$("[data-filter]", filterHost).forEach((item) => {
-        const active = item === button;
-        item.classList.toggle("is-active", active);
-        item.setAttribute("aria-pressed", String(active));
-      });
-      update();
-    });
-
-    update();
+    host.innerHTML = STYLE_ORDER.map((category, index) => {
+      const items = ESSAYS.filter((work) => work.category === category);
+      const list = items
+        .map(
+          (work) => `
+            <a class="category-item" href="essays.html?style=${encodeURIComponent(category)}#${escapeHTML(work.id)}">
+              <span class="category-item-title">${escapeHTML(work.title)}</span>
+              <span class="category-item-meta">${escapeHTML(work.author)} · ${escapeHTML(work.className || "")}</span>
+              <span class="category-item-arrow" aria-hidden="true">↗</span>
+            </a>`
+        )
+        .join("");
+      return `
+        <section class="category-block reveal">
+          <header class="category-block-head">
+            <span class="category-no">${pad(index + 1)}</span>
+            <h2>${escapeHTML(category)}</h2>
+            <p>${escapeHTML(STYLE_NOTES[category] || "")}</p>
+            <span class="category-count">${items.length} 篇</span>
+          </header>
+          <div class="category-list">${list}</div>
+        </section>`;
+    }).join("");
   }
 
   /* ---------- 滚动出现 ---------- */
@@ -363,8 +338,9 @@
     });
 
     $("[data-menu-close]")?.addEventListener("click", closeMenu);
-
-    $$("a", menu || document.createElement("div")).forEach((link) => link.addEventListener("click", closeMenu));
+    $$("a", menu || document.createElement("div")).forEach((link) =>
+      link.addEventListener("click", closeMenu)
+    );
 
     window.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && menu?.classList.contains("is-open")) closeMenu();
@@ -375,19 +351,16 @@
     });
   }
 
-  /* ---------- 通用弹层 ---------- */
+  /* ---------- 弹层通用 ---------- */
 
-  const dialogState = {
-    lastFocus: null,
-    active: null,
-  };
+  const dialogState = { lastFocus: null, active: null };
 
   function lockBody() {
     document.body.classList.add("is-locked");
   }
 
   function unlockBody() {
-    if (!$(".reader.is-open") && !$(".lightbox.is-open") && !$(".mobile-menu.is-open")) {
+    if (!$(".reader.is-open") && !$(".mobile-menu.is-open")) {
       document.body.classList.remove("is-locked");
     }
   }
@@ -430,7 +403,6 @@
   let readerMeta;
   let readerBody;
   let readerNav;
-  let currentEssayIndex = -1;
 
   function buildReader() {
     reader = document.createElement("div");
@@ -450,11 +422,11 @@
             <div class="reader-meta" data-reader-meta></div>
           </header>
           <div class="reader-body" id="readerBody" data-reader-body></div>
-          <aside class="reader-comment" data-reader-comment>
-            <p class="reader-comment-label">老师批注</p>
+          <aside class="reader-comment" data-reader-comment hidden>
+            <p class="reader-comment-label">编辑手记</p>
             <p data-reader-comment-text></p>
           </aside>
-          <nav class="reader-nav" data-reader-nav aria-label="作文切换"></nav>
+          <nav class="reader-nav" data-reader-nav aria-label="篇目切换"></nav>
         </div>
       </article>`;
     document.body.appendChild(reader);
@@ -470,7 +442,6 @@
     reader.addEventListener("click", (event) => {
       if (event.target.closest("[data-close-reader]")) closeReader();
     });
-
     readerScroll.addEventListener("scroll", updateReaderProgress, { passive: true });
     readerNav.addEventListener("click", (event) => {
       const button = event.target.closest("[data-reader-go]");
@@ -488,29 +459,41 @@
   function renderReader(work) {
     if (!reader || !work) return;
     const index = ESSAYS.findIndex((item) => item.id === work.id);
-    currentEssayIndex = index;
+    const readTime = work.readTime || Math.max(1, Math.ceil((work.body || []).join("").length / 350));
 
-    readerKicker.textContent = `青禾集 · ${work.category} · ${work.date.replaceAll("-", ".")}`;
+    readerKicker.textContent = `风禾有章 · ${work.category}`;
     readerTitle.textContent = work.title;
     readerMeta.innerHTML = `
       <strong>${escapeHTML(work.author)}</strong>
-      <span>${escapeHTML(work.age || "")}</span>
+      <span>${escapeHTML(work.className || "")}</span>
       <span class="dot" aria-hidden="true"></span>
       <span>${escapeHTML(work.category)}</span>
       <span class="dot" aria-hidden="true"></span>
-      <span>约 ${escapeHTML(String(work.readTime || Math.max(1, Math.ceil((work.body || []).join("").length / 350))))} 分钟</span>`;
+      <span>约 ${escapeHTML(String(readTime))} 分钟</span>`;
 
     const quoteAt = Math.min(2, (work.body || []).length - 1);
+    const quoteInBody = (work.body || []).some((paragraph) =>
+      paragraph.includes(work.quote || "__never__")
+    );
     readerBody.innerHTML = (work.body || [])
       .map((paragraph, i) => {
-        const quote = i === quoteAt && work.quote
-          ? `<blockquote class="reader-quote">「${escapeHTML(work.quote)}」</blockquote>`
-          : "";
+        const quote =
+          i === quoteAt && work.quote && !quoteInBody
+            ? `<blockquote class="reader-quote">「${escapeHTML(work.quote)}」</blockquote>`
+            : "";
         return `<p>${escapeHTML(paragraph)}</p>${quote}`;
       })
       .join("");
 
-    $("[data-reader-comment-text]", reader).textContent = work.comment || "";
+    const commentBox = $("[data-reader-comment]", reader);
+    const commentText = $("[data-reader-comment-text]", reader);
+    if (work.comment) {
+      commentBox.hidden = false;
+      commentText.textContent = work.comment;
+    } else {
+      commentBox.hidden = true;
+      commentText.textContent = "";
+    }
 
     const prev = ESSAYS[index - 1];
     const next = ESSAYS[index + 1];
@@ -534,21 +517,18 @@
     reader.setAttribute("aria-hidden", "false");
     lockBody();
     dialogState.active = "reader";
-    const close = $(".reader-close", reader);
-    window.setTimeout(() => close?.focus({ preventScroll: true }), 120);
+    window.setTimeout(() => $(".reader-close", reader)?.focus({ preventScroll: true }), 120);
   }
 
   function openEssay(id, keepFocus = false) {
     const work = byId(id);
-    if (!work || work.type !== "essay") return;
+    if (!work) return;
     if (!reader) buildReader();
     if (!keepFocus) rememberFocus();
     renderReader(work);
     openReader();
     const hash = `#${work.id}`;
-    if (window.location.hash !== hash) {
-      history.replaceState(null, "", hash);
-    }
+    if (window.location.hash !== hash) history.replaceState(null, "", hash);
   }
 
   function closeReader() {
@@ -563,136 +543,20 @@
     restoreFocus();
   }
 
-  /* ---------- 灯箱 ---------- */
-
-  let lightbox;
-  let lightboxImg;
-  let lightboxTitle;
-  let lightboxMeta;
-  let lightboxComment;
-  let lightboxIndex;
-  let currentArtIndex = -1;
-
-  function buildLightbox() {
-    lightbox = document.createElement("div");
-    lightbox.className = "lightbox";
-    lightbox.setAttribute("aria-hidden", "true");
-    lightbox.innerHTML = `
-      <div class="lightbox-backdrop" data-close-lightbox></div>
-      <div role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
-        <button class="lightbox-close" type="button" data-close-lightbox aria-label="关闭画作">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        </button>
-        <div class="lightbox-figure"><img data-lightbox-img alt=""></div>
-        <div class="lightbox-caption">
-          <div class="lightbox-caption-copy">
-            <h2 id="lightboxTitle" data-lightbox-title></h2>
-            <p data-lightbox-meta></p>
-            <p class="lightbox-comment" data-lightbox-comment></p>
-          </div>
-          <span class="lightbox-index" data-lightbox-index></span>
-        </div>
-        <button class="lightbox-arrow lightbox-arrow--prev" type="button" data-lightbox-prev aria-label="上一幅">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
-        </button>
-        <button class="lightbox-arrow lightbox-arrow--next" type="button" data-lightbox-next aria-label="下一幅">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
-        </button>
-      </div>`;
-    document.body.appendChild(lightbox);
-
-    lightboxImg = $("[data-lightbox-img]", lightbox);
-    lightboxTitle = $("[data-lightbox-title]", lightbox);
-    lightboxMeta = $("[data-lightbox-meta]", lightbox);
-    lightboxComment = $("[data-lightbox-comment]", lightbox);
-    lightboxIndex = $("[data-lightbox-index]", lightbox);
-
-    lightbox.addEventListener("click", (event) => {
-      if (event.target.closest("[data-close-lightbox]")) closeLightbox();
-      if (event.target.closest("[data-lightbox-prev]")) stepArt(-1);
-      if (event.target.closest("[data-lightbox-next]")) stepArt(1);
-    });
-  }
-
-  function renderLightbox(work) {
-    const index = ARTWORKS.findIndex((item) => item.id === work.id);
-    currentArtIndex = index;
-    lightboxImg.src = work.src;
-    lightboxImg.alt = `${work.title}，${work.description || ""}`;
-    lightboxTitle.textContent = work.title;
-    lightboxMeta.textContent = `${work.author} · ${work.age || ""} · ${work.medium} · ${work.size} · ${work.year}`;
-    lightboxComment.textContent = work.comment || work.description || "";
-    lightboxIndex.textContent = `${pad(index + 1)} / ${pad(ARTWORKS.length)}`;
-    $$("[data-lightbox-prev]", lightbox).forEach((btn) => (btn.disabled = index <= 0));
-    $$("[data-lightbox-next]", lightbox).forEach((btn) => (btn.disabled = index >= ARTWORKS.length - 1));
-    lightbox.setAttribute("aria-label", `画作：${work.title}`);
-  }
-
-  function openLightbox(id) {
-    const work = byId(id);
-    if (!work || work.type !== "art") return;
-    if (!lightbox) buildLightbox();
-    rememberFocus();
-    renderLightbox(work);
-    lightbox.classList.add("is-open");
-    lightbox.setAttribute("aria-hidden", "false");
-    lockBody();
-    dialogState.active = "lightbox";
-    window.setTimeout(() => $(".lightbox-close", lightbox)?.focus({ preventScroll: true }), 80);
-    const hash = `#${work.id}`;
-    if (window.location.hash !== hash) {
-      history.replaceState(null, "", hash);
-    }
-  }
-
-  function closeLightbox() {
-    if (!lightbox || !lightbox.classList.contains("is-open")) return;
-    lightbox.classList.remove("is-open");
-    lightbox.setAttribute("aria-hidden", "true");
-    dialogState.active = null;
-    if (window.location.hash.startsWith("#art-")) {
-      history.replaceState(null, "", window.location.pathname + window.location.search);
-    }
-    unlockBody();
-    restoreFocus();
-  }
-
-  function stepArt(direction) {
-    const nextIndex = currentArtIndex + direction;
-    if (nextIndex < 0 || nextIndex >= ARTWORKS.length) return;
-    renderLightbox(ARTWORKS[nextIndex]);
-    const hash = `#${ARTWORKS[nextIndex].id}`;
-    history.replaceState(null, "", hash);
-  }
-
   /* ---------- 全局事件 ---------- */
 
   function initGlobalEvents() {
     document.addEventListener("click", (event) => {
       const essayButton = event.target.closest("[data-open-essay]");
-      if (essayButton) {
-        event.preventDefault();
-        openEssay(essayButton.dataset.openEssay);
-        return;
-      }
-      const artButton = event.target.closest("[data-open-art]");
-      if (artButton) {
-        event.preventDefault();
-        openLightbox(artButton.dataset.openArt);
-      }
+      if (!essayButton) return;
+      event.preventDefault();
+      openEssay(essayButton.dataset.openEssay);
     });
 
     window.addEventListener("keydown", (event) => {
-      if (dialogState.active === "reader") {
-        if (event.key === "Escape") closeReader();
-        trapFocus(event, $(".reader-panel"));
-      }
-      if (dialogState.active === "lightbox") {
-        if (event.key === "Escape") closeLightbox();
-        if (event.key === "ArrowLeft") stepArt(-1);
-        if (event.key === "ArrowRight") stepArt(1);
-        trapFocus(event, $(".lightbox [role='dialog']"));
-      }
+      if (dialogState.active !== "reader") return;
+      if (event.key === "Escape") closeReader();
+      trapFocus(event, $(".reader-panel"));
     });
   }
 
@@ -701,10 +565,7 @@
     if (!hash) return;
     const work = byId(hash);
     if (!work) return;
-    window.setTimeout(() => {
-      if (work.type === "essay") openEssay(work.id);
-      if (work.type === "art") openLightbox(work.id);
-    }, 120);
+    window.setTimeout(() => openEssay(work.id), 120);
   }
 
   function init() {
@@ -714,14 +575,13 @@
     initHeader();
     renderHome();
     initEssayPage();
-    initGalleryPage();
+    initCategoryPage();
     initReveal();
     initGlobalEvents();
     openFromHash();
 
-    // 筛选或搜索后，新出现的卡片也要被观察。
     const mutationObserver = new MutationObserver(() => initReveal());
-    $$("[data-essay-grid], [data-gallery-grid], [data-home-essays], [data-home-art]").forEach((host) => {
+    $$("[data-essay-grid], [data-home-essays], [data-category-index]").forEach((host) => {
       mutationObserver.observe(host, { childList: true });
     });
   }

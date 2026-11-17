@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="青禾集">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="风禾有章">
   <rect width="64" height="64" rx="14" fill="#1F2D26"/>
   <rect x="4.5" y="4.5" width="55" height="55" rx="11" fill="none" stroke="#F6F1E7" stroke-opacity=".35"/>
-  <path d="M32 49V27" stroke="#F6F1E7" stroke-width="2.6" stroke-linecap="round"/>
-  <path d="M32 34C24 34 19.5 29.5 19 22c8 .2 12.8 4.6 13 12Z" fill="#C19A55"/>
-  <path d="M32 40c8 0 12.5-4.5 13-12-8 .2-12.8 4.6-13 12Z" fill="#B9573D"/>
-  <circle cx="32" cy="18" r="2.4" fill="#F6F1E7"/>
+  <path d="M32 50V27" stroke="#F6F1E7" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M32 35C24.5 35 20.2 30.6 19.5 23c7.8.2 12.3 4.5 12.5 12Z" fill="#C19A55"/>
+  <path d="M32 41c7.5 0 11.8-4.4 12.5-12-7.8.2-12.3 4.5-12.5 12Z" fill="#B9573D"/>
+  <path d="M14 15c5-4 10-4 15 0M39 17c4-3 8-3 12 0" fill="none" stroke="#F6F1E7" stroke-width="1.6" stroke-linecap="round" opacity=".55"/>
 </svg>

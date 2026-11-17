@@ -1,90 +1,75 @@
-# 青禾集 · 班级作品展
+# 风禾有章 · 习作集
 
-一个给老师用的静态作品展示网站：左边读作文，右边看画。没有框架、没有构建步骤，改一个数据文件就能换成自己班级的内容。
+中高一体部 · 高一（1）班 高一（3）班习作集。  
+**迎风生长，落笔成章。**
 
-当前示例内容为「青禾小学 · 六年级（3）班 · 2026 秋季展」，共 7 篇作文、8 幅绘画，8 位小作者。
+收录 16 篇以「窗外的那棵树」为起点的随笔，按 **风物 / 心绪 / 生长** 三种风格编入索引。
+
+- **线上地址**：<https://zzz07141.github.io/qinghe-showcase/>
+- **源码仓库**：<https://github.com/zzz07141/qinghe-showcase>
 
 ## 本地预览
 
-在项目目录打开终端：
-
 ```bash
 cd projects/essay-art-showcase
-python -m http.server 8123 --bind 0.0.0.0
+python -m http.server 8123
 ```
 
-浏览器访问 <http://127.0.0.1:8123/>。
-
-`--bind 0.0.0.0` 表示同一局域网的其他电脑也能访问。对方电脑要用这台电脑的局域网 IPv4 地址，例如 `http://192.168.1.23:8123/`，不能用 `127.0.0.1`（那是对方电脑自己）。
-
-查看本机局域网地址：
-
-```powershell
-Get-NetIPAddress -AddressFamily IPv4 | Where-Object { $_.IPAddress -notlike '127.*' -and $_.IPAddress -notlike '169.254.*' }
-```
-
-如果同网段仍打不开，检查 Windows 防火墙是否放行 Python / TCP 8123；校园网若做了终端隔离，需要改用公网静态托管。
-
-也可以直接双击 `index.html` 打开；不过用本地服务器预览，路径和字体表现会更接近正式发布。
+浏览器打开 <http://127.0.0.1:8123/>。这是纯静态站，也可以直接双击 `index.html`。
 
 ## 页面结构
 
 | 文件 | 内容 |
 | --- | --- |
-| `index.html` | 首页：展览引言、本期主题、精选作文、精选画作、老师的话 |
-| `essays.html` | 作文馆：分类筛选、关键词搜索、全文阅读器 |
-| `gallery.html` | 画笔画廊：材料筛选、作品灯箱、上一幅/下一幅 |
-| `about.html` | 关于展览：展览主张、缘起、做法、老师与说明 |
-| `assets/js/data.js` | **唯一内容源**：学校信息、作文、绘画 |
-| `assets/art/` | 绘画作品图片 |
+| `index.html` | 卷首：标语、简介、摘句、三篇选读、风格索引、编者的话 |
+| `essays.html` | 习作集：16 篇全文、风格筛选、关键词搜索、阅读器 |
+| `gallery.html` | 分类索引：风物 / 心绪 / 生长，按风格列篇目 |
+| `about.html` | 关于：编选原则、缘起、编辑过程、习作集信息 |
+| `assets/js/data.js` | 内容源：站点信息、16 篇习作、风格与作者班级 |
 | `assets/css/style.css` | 全站视觉与响应式样式 |
-| `assets/js/site.js` | 渲染、筛选、搜索、阅读器、灯箱、动效 |
-| `tools/make_art.py` | 生成示例绘画（可选，替换真实作品后不再需要） |
-| `tools/shoot.js` | 本地截图验收脚本（可选） |
+| `assets/js/site.js` | 渲染、筛选、搜索、阅读器、分类索引、移动菜单 |
 
-## 改成自己班级的内容
+## 改内容
 
-### 1. 学校、班级、老师、展期
+### 1. 站点名、副题、主题
 
-打开 `assets/js/data.js`，只改最上面的 `SITE`：
+编辑 `assets/js/data.js` 顶部的 `SITE`：
 
 ```js
 const SITE = {
-  name: "青禾集",              // 展览名，会出现在页头、页脚、浏览器标题
-  mark: "青禾",                // 印章上的两个字
-  english: "QINGHE COLLECTION",// 页头英文小字
-  className: "六年级（3）班",
-  term: "2026 秋季",           // 关于页、页脚用
-  termShort: "2026 秋",        // 页头右上角用，短一点
-  teacher: "林老师",
-  school: "青禾小学",
-  email: "hello@qinghe.class",
-  intro: "这里收藏着孩子们的句子和颜色……",
-  themeTitle: "生长",          // 本期主题
+  name: "风禾有章",
+  mark: "风禾",
+  english: "FENGHE ANTHOLOGY",
+  tagline: "迎风生长，落笔成章",
+  className: "高一（1）班 · 高一（3）班",
+  term: "2026 秋",
+  teacher: "中高一体部语文组",
+  school: "中高一体部",
+  intro: "这里收录同学们写下的随笔片段……",
+  themeTitle: "窗外的那棵树",
+  themeSeal: "窗外",
 };
 ```
 
-保存后刷新页面即可。`name`、`mark`、`school`、`className`、`term`、`termShort`、`teacher`、`email` 会自动同步到四个页面的相关文字，不需要逐页改 HTML。
+`name`、`mark`、`school`、`className`、`term`、`teacher` 会同步到页面上的相关固定文字；`intro` 控制首页简介，`themeTitle` 控制“本期主题”，`themeSeal` 控制引言区的竖排小印。
 
-### 2. 增加或替换作文
+### 2. 增加或替换习作
 
-在 `ESSAYS` 数组里复制一段，改字段：
+在 `ESSAYS` 数组里复制一段：
 
 ```js
 {
-  id: "essay-new",             // 唯一，不要和别的重复；会用于 #essay-new 深链
+  id: "essay-new",             // 唯一，用于 #essay-new 深链
   type: "essay",
+  order: 17,                   // 卷内顺序
   title: "题目",
   author: "作者",
-  age: "11岁",
-  category: "记事",            // 会生成筛选按钮，建议保持 4–6 类
-  tags: ["亲情", "四季"],       // 卡片右下角的小标签
-  date: "2026-10-20",          // 用于排序，新的在前
-  featured: true,              // 是否上首页（首页取前 3 篇）
-  readTime: 4,                 // 可选，不填会按正文长度估算
-  excerpt: "卡片上的一句话。",
-  quote: "文中的金句，可选。",
-  comment: "老师批注，可选。",
+  className: "高一（1）班",    // 或高一（3）班
+  category: "风物",             // 风物 / 心绪 / 生长
+  tags: ["树", "雨后"],
+  featured: false,             // 首页取前 3 篇 featured
+  excerpt: "卡片上的一句摘录。",
+  quote: "文中的金句，可选；阅读器会自动判断是否与正文重复。",
   body: [
     "第一段。",
     "第二段。",
@@ -92,78 +77,51 @@ const SITE = {
 },
 ```
 
-- 首页只显示 `featured: true` 的前 3 篇，所以建议把最想推荐的 3 篇设为 `true`。
-- 正文每一段一个字符串，阅读器会自动排版；引用会插在第 3 段之后（有 `quote` 时）。
-- `category` 决定筛选按钮，新增分类会自动出现，不需要改 JS。
-- 搜索会匹配标题、作者、正文、标签。
+- `category` 决定筛选按钮与分类索引；新增分类会自动出现，但 `STYLE_ORDER` 和 `STYLE_NOTES` 在 `assets/js/site.js` 顶部，若想固定顺序和分类说明可一并修改。
+- `featured: true` 的篇目按数组顺序取前 3 篇上首页。
+- `order` 控制习作集列表顺序。
+- `quote` 可选；阅读器会在正文中找一个位置插入，若正文已包含该句则不再重复。
+- 不需要手改“16 篇 / 16 位作者”等数字，页面会自动统计。
 
-### 3. 增加或替换绘画
+### 3. 修改分类说明
 
-把图片放进 `assets/art/`，然后在 `ARTWORKS` 数组里复制一段：
+`assets/js/site.js` 顶部：
 
 ```js
-{
-  id: "art-new",               // 唯一
-  type: "art",
-  title: "作品名",
-  author: "作者",
-  age: "11岁",
-  category: "水彩",            // 会生成材料筛选按钮
-  medium: "水彩 · 彩铅",       // 卡片和灯箱里的材料说明
-  size: "38 × 52 cm",
-  year: "2026",
-  date: "2026-10-20",
-  featured: true,              // 是否上首页（首页取前 4 幅）
-  orientation: "portrait",     // portrait 竖幅 / landscape 横幅
-  src: "assets/art/new.jpg",   // 相对路径，注意大小写
-  excerpt: "卡片上的一句短说明。",
-  description: "灯箱里的作品介绍。",
-  comment: "老师批注，可选。",
-},
+const STYLE_ORDER = ["风物", "心绪", "生长"];
+const STYLE_NOTES = {
+  风物: "目光停在枝叶、光影、雨雾与村庄的晨昏里。",
+  心绪: "树影与心事互相照见，风一吹，句子就有了温度。",
+  生长: "由树及人，写时间、陪伴，也写少年自己的成长。",
+};
 ```
 
-- 图片建议长边 1200–1600px、单张 500KB 以内；JPG / PNG / WebP / SVG 都可以。
-- 不要求统一比例，画廊会自动按图片高度排布。
-- `src` 路径相对于项目根目录，不要写 `D:\...` 这类本机绝对路径。
-- 首页只显示 `featured: true` 的前 4 幅。
+### 4. 题图与装饰
 
-### 4. 作品数量
+本版不再使用绘画图片，卷首摘句卡、分类索引和印章都由 HTML/CSS 生成。若以后要加入图片，可在 `assets/` 下新建目录并在页面中引用；若不需要，不要恢复旧的 `assets/art` 引用。
 
-页面上的「15 件作品 · 8 位小作者」「共 07 篇」「共 08 幅」等数字由脚本按数组自动计算，**不需要手改**。新增或删除作品后刷新即可。
+## 发布与更新
 
-## 发布
+当前项目根目录已经关联 GitHub 仓库并启用 GitHub Pages。修改后提交、推送即可自动更新线上版：
 
-这是纯静态网站，不需要 Node、数据库或后端。把整个 `essay-art-showcase` 文件夹上传到任意静态托管即可：
+```bash
+cd projects/essay-art-showcase
+git add index.html essays.html gallery.html about.html assets README.md
+git commit -m "Update Fenghe anthology"
+git push origin main
+```
 
-- GitHub Pages
-- Netlify / Vercel 的静态站点
-- 学校自己的 Web 服务器 / 对象存储
-- 内网共享目录（配合一个静态文件服务）
-
-保持 `index.html` 在站点根目录，`assets/` 的相对位置不变即可。页面内所有链接和图片都使用相对路径，部署在子目录也能正常工作。
+推送后约 1 分钟，刷新 <https://zzz07141.github.io/qinghe-showcase/> 即可。`tools/` 是本机生成和验收脚本，已通过 `.gitignore` 排除，不会发布。
 
 ## 交互与细节
 
-- 作文卡、画作卡整张可点；阅读器和灯箱支持 `Esc` 关闭。
-- 阅读器支持 `←` / `→` 切换上一篇、下一篇；灯箱同样支持左右方向键。
-- 深链：`essays.html#essay-yard` 直接打开某篇作文，`gallery.html#art-spring` 直接打开某幅画。
-- 移动端菜单、筛选条、搜索框、阅读器都做了 390px 适配。
-- 支持 `prefers-reduced-motion`；打印页面时会隐藏交互控件。
-- 图片使用 `loading="lazy"`，首屏只预加载前两张。
+- 习作卡整张可点，打开阅读器；支持 `Esc` 关闭、`←` / `→` 切换上下篇。
+- 筛选 `风物 / 心绪 / 生长`，搜索标题、作者、班级、标签或摘录。
+- 深链示例：`essays.html?style=风物#essay-window-tree` 会先筛到风物，再打开对应篇目。
+- 分类索引页按三种风格列出全部篇目，点篇名直接进入阅读。
+- 移动端 390px 适配；阅读器、筛选条、移动菜单都已实测。
+- 支持 `prefers-reduced-motion` 和打印样式。
 
-## 常见问题
+## 内容说明
 
-**改了 `SITE` 但页面没变？**  
-先强制刷新（`Ctrl/Cmd + Shift + R`）。如果改的是 `SITE` 没有覆盖的句子，需要直接改对应 HTML。
-
-**新增作品不显示？**  
-检查 `id` 是否重复、`src` 路径大小写是否正确、`featured` 是否为 `true`（首页）、当前筛选是否把它排除了。
-
-**绘画图片空白？**  
-优先换 JPG/PNG 测试；如果是 SVG，确认文件能被浏览器直接打开。示例 SVG 由脚本生成，已做 XML 校验。
-
-**想换配色或字体？**  
-`assets/css/style.css` 顶部的 `:root` 里有 `--paper`、`--ink`、`--terra`、`--gold` 和字体栈，改这几个变量就能整体换气质。
-
-**示例内容可以直接发布吗？**  
-示例作文和绘画都是虚构的，发布前请替换为班级真实作品，并确认作者署名方式。
+示例篇目来自本次收到的《风禾有章——窗外的那棵树》文档，保留原句原意，仅对分段和明显标点笔误做了整理。正式对外发布前，请确认作者署名、班级信息与篇目授权。
