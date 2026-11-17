@@ -24,6 +24,8 @@ const SITE = {
 const ESSAYS = [
   {
     id: "essay-window-tree",
+    image: "assets/img/essays/essay-window-tree.jpg",
+    imageAlt: "风吹过教室窗外的老树，桌上留着一张白纸",
     type: "essay",
     order: 1,
     title: "窗外的那棵树",
@@ -43,6 +45,8 @@ const ESSAYS = [
   },
   {
     id: "essay-after-rain",
+    image: "assets/img/essays/essay-after-rain.jpg",
+    imageAlt: "雨后树叶上的水珠与窗外阳光",
     type: "essay",
     order: 2,
     title: "雨后的窗外",
@@ -61,6 +65,8 @@ const ESSAYS = [
   },
   {
     id: "essay-bird-nest",
+    image: "assets/img/essays/essay-bird-nest.jpg",
+    imageAlt: "晴日枝头的两只小鸟",
     type: "essay",
     order: 3,
     title: "晴日的鸟巢",
@@ -78,6 +84,8 @@ const ESSAYS = [
   },
   {
     id: "essay-summer-branches",
+    image: "assets/img/essays/essay-summer-branches.jpg",
+    imageAlt: "夏日浓绿枝桠与树上的蝉",
     type: "essay",
     order: 4,
     title: "夏日枝桠",
@@ -95,6 +103,8 @@ const ESSAYS = [
   },
   {
     id: "essay-ginkgo-wind",
+    image: "assets/img/essays/essay-ginkgo-wind.jpg",
+    imageAlt: "寒风里飘落的银杏叶",
     type: "essay",
     order: 5,
     title: "风中的银杏",
@@ -112,6 +122,8 @@ const ESSAYS = [
   },
   {
     id: "essay-window-soldiers",
+    image: "assets/img/essays/essay-window-soldiers.jpg",
+    imageAlt: "窗外像战士般挺立的一排树",
     type: "essay",
     order: 6,
     title: "窗外的战士",
@@ -130,6 +142,8 @@ const ESSAYS = [
   },
   {
     id: "essay-dry-leaf",
+    image: "assets/img/essays/essay-dry-leaf.jpg",
+    imageAlt: "窗边书页上的一片枯黄叶子",
     type: "essay",
     order: 7,
     title: "一片枯叶的夏天",
@@ -148,6 +162,8 @@ const ESSAYS = [
   },
   {
     id: "essay-four-seasons",
+    image: "assets/img/essays/essay-four-seasons.jpg",
+    imageAlt: "教室窗外走过四季的大树",
     type: "essay",
     order: 8,
     title: "它陪我们走过四季",
@@ -165,6 +181,8 @@ const ESSAYS = [
   },
   {
     id: "essay-small-tree",
+    image: "assets/img/essays/essay-small-tree.jpg",
+    imageAlt: "前景的小树苗与身后的大树",
     type: "essay",
     order: 9,
     title: "小树，大树",
@@ -182,6 +200,8 @@ const ESSAYS = [
   },
   {
     id: "essay-green-shadows",
+    image: "assets/img/essays/essay-green-shadows.jpg",
+    imageAlt: "绿叶间漏下的光与树影",
     type: "essay",
     order: 10,
     title: "翠色与树影",
@@ -199,6 +219,8 @@ const ESSAYS = [
   },
   {
     id: "essay-golden-coat",
+    image: "assets/img/essays/essay-golden-coat.jpg",
+    imageAlt: "夕阳金光里的树冠",
     type: "essay",
     order: 11,
     title: "披着金光的外衣",
@@ -216,6 +238,8 @@ const ESSAYS = [
   },
   {
     id: "essay-tree-singing",
+    image: "assets/img/essays/essay-tree-singing.jpg",
+    imageAlt: "雨后风中摇曳歌唱的树",
     type: "essay",
     order: 12,
     title: "树在唱歌",
@@ -235,6 +259,8 @@ const ESSAYS = [
   },
   {
     id: "essay-after-mist",
+    image: "assets/img/essays/essay-after-mist.jpg",
+    imageAlt: "雾气散开后落在窗边的光斑",
     type: "essay",
     order: 13,
     title: "雾散之后",
@@ -252,6 +278,8 @@ const ESSAYS = [
   },
   {
     id: "essay-among-flowers",
+    image: "assets/img/essays/essay-among-flowers.jpg",
+    imageAlt: "林间草地上的细碎野花",
     type: "essay",
     order: 14,
     title: "花间",
@@ -269,6 +297,8 @@ const ESSAYS = [
   },
   {
     id: "essay-osmanthus",
+    image: "assets/img/essays/essay-osmanthus.jpg",
+    imageAlt: "阳光下开满细碎金花的桂花树",
     type: "essay",
     order: 15,
     title: "桂花树",
@@ -286,6 +316,8 @@ const ESSAYS = [
   },
   {
     id: "essay-village-days",
+    image: "assets/img/essays/essay-village-days.jpg",
+    imageAlt: "晨昏中的村野与炊烟",
     type: "essay",
     order: 16,
     title: "村野晨昏",

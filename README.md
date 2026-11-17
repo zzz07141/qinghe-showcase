@@ -26,6 +26,8 @@ python -m http.server 8123
 | `gallery.html` | 分类索引：风物 / 心绪 / 生长，按风格列篇目 |
 | `about.html` | 关于：编选原则、缘起、编辑过程、习作集信息 |
 | `assets/js/data.js` | 内容源：站点信息、16 篇习作、风格与作者班级 |
+| `assets/img/essays/` | 每篇习作的 ComfyUI 配图 |
+| `ILLUSTRATION-PROMPTS.md` | 16 篇配图的提示词、种子与工作流 |
 | `assets/css/style.css` | 全站视觉与响应式样式 |
 | `assets/js/site.js` | 渲染、筛选、搜索、阅读器、分类索引、移动菜单 |
 
@@ -78,6 +80,8 @@ const SITE = {
 ```
 
 - `category` 决定筛选按钮与分类索引；新增分类会自动出现，但 `STYLE_ORDER` 和 `STYLE_NOTES` 在 `assets/js/site.js` 顶部，若想固定顺序和分类说明可一并修改。
+- `image` 指向 `assets/img/essays/` 下的配图；卡片会显示横幅，阅读器会显示 3:2 大图。
+- `imageAlt` 是配图的无障碍说明。
 - `featured: true` 的篇目按数组顺序取前 3 篇上首页。
 - `order` 控制习作集列表顺序。
 - `quote` 可选；阅读器会在正文中找一个位置插入，若正文已包含该句则不再重复。
@@ -121,6 +125,16 @@ git push origin main
 - 分类索引页按三种风格列出全部篇目，点篇名直接进入阅读。
 - 移动端 390px 适配；阅读器、筛选条、移动菜单都已实测。
 - 支持 `prefers-reduced-motion` 和打印样式。
+
+## 配图
+
+16 张配图全部由本机 **ComfyUI** 生成（DreamShaper 8 / SD 1.5，768×512，3:2），统一做了轻微降饱和、提对比和暖纸色后期。每篇的英文提示词、种子、通用风格尾缀与负向词见 [ILLUSTRATION-PROMPTS.md](<ILLUSTRATION-PROMPTS.md>)。
+
+重新生成某几篇：
+
+```bash
+python tools/make_essay_illustrations.py --only essay-after-rain,essay-village-days --force
+```
 
 ## 内容说明
 

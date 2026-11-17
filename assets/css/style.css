@@ -2726,3 +2726,65 @@ h1, h2, h3, h4, blockquote {
   .hero-art--side .quote-sheet-text { font-size: 12px; line-height: 1.7; }
   .hero-art--wide .quote-sheet-text { font-size: 12px; line-height: 1.7; }
 }
+
+/* ---------- 作文配图 ---------- */
+
+.essay-card-image {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  margin-top: 22px;
+  overflow: hidden;
+  background: var(--paper-deep);
+  border: 1px solid rgba(31, 45, 38, 0.1);
+}
+.essay-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.96) contrast(1.01);
+  transition: transform 0.8s var(--ease);
+}
+.essay-card:hover .essay-card-image img { transform: scale(1.025); }
+.essay-card--dark .essay-card-image { border-color: rgba(246, 241, 231, 0.14); }
+
+.reader-illustration {
+  margin: 28px 0 0;
+}
+.reader-illustration img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  background: var(--paper-deep);
+  filter: saturate(0.96) contrast(1.01);
+}
+.reader-illustration figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .essay-card-image { margin-top: 18px; }
+  .reader-illustration { margin-top: 22px; }
+}
+
+/* 统一配图的纸感：轻微降饱和 + 暖色 + 细颗粒 */
+.essay-card-image img,
+.reader-illustration img {
+  filter: saturate(0.88) contrast(0.97) sepia(0.05) brightness(1.01);
+}
+.essay-card-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}

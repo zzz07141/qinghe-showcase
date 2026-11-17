@@ -139,6 +139,7 @@
             <span class="essay-card-index">${pad(index + 1)}</span>
             <span class="essay-chip">${escapeHTML(work.category)}</span>
           </span>
+          ${work.image ? `<span class="essay-card-image"><img src="${escapeHTML(work.image)}" alt="${escapeHTML(work.imageAlt || work.title + "配图")}" loading="lazy" decoding="async"></span>` : ""}
           <span class="essay-card-title">${escapeHTML(work.title)}</span>
           <span class="essay-card-excerpt">${escapeHTML(work.excerpt)}</span>
           ${dark && work.quote ? `<span class="essay-card-quote">「${escapeHTML(work.quote)}」</span>` : ""}
@@ -421,6 +422,10 @@
             <h1 class="reader-title" id="readerTitle" data-reader-title></h1>
             <div class="reader-meta" data-reader-meta></div>
           </header>
+          <figure class="reader-illustration" data-reader-figure hidden>
+            <img data-reader-image alt="">
+            <figcaption data-reader-caption></figcaption>
+          </figure>
           <div class="reader-body" id="readerBody" data-reader-body></div>
           <aside class="reader-comment" data-reader-comment hidden>
             <p class="reader-comment-label">编辑手记</p>
@@ -475,6 +480,21 @@
     const quoteInBody = (work.body || []).some((paragraph) =>
       paragraph.includes(work.quote || "__never__")
     );
+    const figure = $("[data-reader-figure]", reader);
+    const figureImage = $("[data-reader-image]", reader);
+    const figureCaption = $("[data-reader-caption]", reader);
+    if (work.image) {
+      figure.hidden = false;
+      figureImage.src = work.image;
+      figureImage.alt = work.imageAlt || `${work.title}配图`;
+      figureCaption.textContent = `配图 · ${work.title}`;
+    } else {
+      figure.hidden = true;
+      figureImage.removeAttribute("src");
+      figureImage.alt = "";
+      figureCaption.textContent = "";
+    }
+
     readerBody.innerHTML = (work.body || [])
       .map((paragraph, i) => {
         const quote =
