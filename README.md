@@ -3,7 +3,7 @@
 中高一体部 · 高一（1）班 高一（3）班习作集。  
 **迎风生长，落笔成章。**
 
-收录 16 篇以「窗外的那棵树」为起点的随笔，按 **风物 / 心绪 / 生长** 三种风格编入索引。
+收录 17 篇以「窗外的那棵树」为起点的随笔，按 **风物 / 心绪 / 生长** 三种风格编入索引。
 
 - **线上地址**：<https://zzz07141.github.io/qinghe-showcase/>
 - **源码仓库**：<https://github.com/zzz07141/qinghe-showcase>
@@ -22,12 +22,12 @@ python -m http.server 8123
 | 文件 | 内容 |
 | --- | --- |
 | `index.html` | 卷首：标语、简介、摘句、三篇选读、风格索引、编者的话 |
-| `essays.html` | 习作集：16 篇全文、风格筛选、关键词搜索、阅读器 |
+| `essays.html` | 习作集：17 篇全文、风格筛选、关键词搜索、阅读器 |
 | `gallery.html` | 分类索引：风物 / 心绪 / 生长，按风格列篇目 |
 | `about.html` | 关于：编选原则、缘起、编辑过程、习作集信息 |
-| `assets/js/data.js` | 内容源：站点信息、16 篇习作、风格与作者班级 |
+| `assets/js/data.js` | 内容源：站点信息、17 篇习作、风格与作者班级 |
 | `assets/img/essays/` | 每篇习作的 ComfyUI 配图 |
-| `ILLUSTRATION-PROMPTS.md` | 16 篇配图的提示词、种子与工作流 |
+| `ILLUSTRATION-PROMPTS.md` | 17 篇配图的提示词、种子与工作流 |
 | `assets/css/style.css` | 全站视觉与响应式样式 |
 | `assets/js/site.js` | 渲染、筛选、搜索、阅读器、分类索引、移动菜单 |
 
@@ -85,7 +85,7 @@ const SITE = {
 - `featured: true` 的篇目按数组顺序取前 3 篇上首页。
 - `order` 控制习作集列表顺序。
 - `quote` 可选；阅读器会在正文中找一个位置插入，若正文已包含该句则不再重复。
-- 不需要手改“16 篇 / 16 位作者”等数字，页面会自动统计。
+- 不需要手改“17 篇 / 17 位作者”等数字，页面会自动统计。
 
 ### 3. 修改分类说明
 
@@ -128,7 +128,7 @@ git push origin main
 
 ## 配图
 
-16 张配图全部由本机 **ComfyUI** 生成（DreamShaper 8 / SD 1.5，768×512，3:2），统一做了轻微降饱和、提对比和暖纸色后期。每篇的英文提示词、种子、通用风格尾缀与负向词见 [ILLUSTRATION-PROMPTS.md](<ILLUSTRATION-PROMPTS.md>)。
+17 张配图全部由本机 **ComfyUI** 生成（DreamShaper 8 / SD 1.5，768×512，3:2），统一做了轻微降饱和、提对比和暖纸色后期。每篇的英文提示词、种子、通用风格尾缀与负向词见 [ILLUSTRATION-PROMPTS.md](<ILLUSTRATION-PROMPTS.md>)。
 
 重新生成某几篇：
 

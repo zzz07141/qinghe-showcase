@@ -1,6 +1,6 @@
 # 风禾有章 · 配图提示词与工作流
 
-16 篇习作的配图均由本机 ComfyUI 生成。统一为 3:2 横幅、768 × 512，适合文章卡片与阅读器内嵌。
+17 篇习作的配图均由本机 ComfyUI 生成。统一为 3:2 横幅、768 × 512，适合文章卡片与阅读器内嵌。
 
 ## 统一工作流
 
@@ -25,7 +25,7 @@ Chinese literary editorial illustration, muted ink wash and soft gouache, sage g
 text, letters, Chinese characters, watermark, logo, signature, frame, border, UI, photorealistic, 3d render, CGI, neon, oversaturated, high contrast, anime, cartoon, chibi, people, human faces, hands, deformed, extra limbs, low quality, blurry, cluttered
 ```
 
-> 说明：DreamShaper 8 对“插画/水彩”提示仍会保留一定写实质感；负向主要用于压掉文字、边框、人物畸变与过曝。最终统一靠 3:2 构图、冷绿/暖褐调色和纸感后期，而不是强行让 16 张图变成同一种笔触。
+> 说明：DreamShaper 8 对“插画/水彩”提示仍会保留一定写实质感；负向主要用于压掉文字、边框、人物畸变与过曝。最终统一靠构图、冷绿/暖褐调色和纸感后期。
 
 ## 逐篇提示词
 
@@ -221,6 +221,23 @@ Chinese calligraphy, calligraphy, writing, characters, letters, text, ink letter
 
 ```text
 a rural village among fields at dawn or dusk, white walls and tiled roofs, cooking smoke rising, winding field paths, distant trees in blue-green haze, wide tranquil panorama, Chinese literary editorial illustration, muted ink wash and soft gouache, sage green, umber, warm paper beige, gentle natural light, quiet poetic atmosphere, painterly paper grain, delicate, no text, 3:2
+```
+
+### 17. 窗外的那棵树（心绪）
+
+- 文件：`assets/img/essays/essay-chen-window-tree.jpg`
+- 种子：`4402`
+
+场景提示词：
+
+```text
+a tall osmanthus tree covered in tiny golden blossoms just outside a classroom window, branches close to the glass, several tiny flowers drifting onto the wooden windowsill, warm autumn afternoon light, gentle breeze, quiet nostalgic atmosphere, a sense of home, no people, no text, no vase, Chinese literary editorial illustration, muted ink wash and soft gouache, sage green, umber, warm paper beige, gentle natural light, quiet poetic atmosphere, painterly paper grain, delicate, no text, 3:2
+```
+
+附加负向：
+
+```text
+Chinese calligraphy, calligraphy, writing, characters, letters, text, ink lettering, paper scroll, person, woman, hands, face, vase, pot, bouquet, flower arrangement, still life
 ```
 
 ## 复现方式
